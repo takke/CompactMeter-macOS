@@ -9,13 +9,11 @@ import SwiftUI
 
 struct CircularMeterView: View {
     let value: Double // 0-100の値
-    let title: String
     let color: Color
     let size: CGFloat
     
-    init(value: Double, title: String, color: Color = .blue, size: CGFloat = 80) {
+    init(value: Double, color: Color = .blue, size: CGFloat = 80) {
         self.value = max(0, min(100, value)) // 0-100の範囲に制限
-        self.title = title
         self.color = color
         self.size = size
     }
@@ -56,11 +54,6 @@ struct CircularMeterView: View {
                         .foregroundColor(.secondary)
                 }
             }
-            
-            Text(title)
-                .font(.caption)
-                .foregroundColor(.primary)
-                .multilineTextAlignment(.center)
         }
     }
 }
@@ -68,9 +61,9 @@ struct CircularMeterView: View {
 struct CircularMeterView_Previews: PreviewProvider {
     static var previews: some View {
         HStack(spacing: 20) {
-            CircularMeterView(value: 25, title: "CPU", color: .blue)
-            CircularMeterView(value: 65, title: "メモリ", color: .green)
-            CircularMeterView(value: 90, title: "ディスク", color: .red)
+            CircularMeterView(value: 25, color: .blue)
+            CircularMeterView(value: 65, color: .green)
+            CircularMeterView(value: 90, color: .red)
         }
         .padding()
         .previewLayout(.sizeThatFits)

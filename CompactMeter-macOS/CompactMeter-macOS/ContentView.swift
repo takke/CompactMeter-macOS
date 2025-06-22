@@ -12,9 +12,9 @@ struct ContentView: View {
     
     var body: some View {
         VStack(spacing: 12) {
-            Text("CPU使用率")
-                .font(.headline)
-                .foregroundColor(.secondary)
+//            Text("CPU使用率")
+//                .font(.headline)
+//                .foregroundColor(.secondary)
             
             // 全体のメーターとコア別メーターを横並びに配置
             HStack(alignment: .top, spacing: 20) {
@@ -22,9 +22,8 @@ struct ContentView: View {
                 VStack(spacing: 12) {
                     CircularMeterView(
                         value: meterViewModel.animatedCPUUsage,
-                        title: "全体",
                         color: .blue,
-                        size: 120
+                        size: 100
                     )
                     
                     // 詳細情報
@@ -59,23 +58,23 @@ struct ContentView: View {
                         }
                     }
                 }
-                .frame(minWidth: 200)
+                .frame(minWidth: 150)
                 
                 // 右側：コア別CPU使用率
                 if let multiCoreData = meterViewModel.multiCoreCPUData {
-                    VStack(spacing: 12) {
+                    VStack(spacing: 20) {
                         MultiCoreView(
                             multiCoreData: multiCoreData,
                             size: 45,
-                            showLabels: true
+                            showLabels: false
                         )
                     }
                     .frame(maxWidth: .infinity)
                 }
             }
         }
-        .padding(16)
-        .frame(minWidth: 600, minHeight: 300)
+        .padding(8)
+        .frame(minWidth: 500, minHeight: 160)
         .onAppear {
             meterViewModel.startMultiCoreMonitoring(interval: 1.0)
         }

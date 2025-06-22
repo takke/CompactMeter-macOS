@@ -25,24 +25,17 @@ struct MultiCoreView: View {
             // コア別メーター表示
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: min(multiCoreData.coreCount, maxCoresPerRow)), spacing: 12) {
                 ForEach(Array(multiCoreData.coreUsages.enumerated()), id: \.offset) { index, coreUsage in
-                    VStack(spacing: 6) {
+                    VStack(spacing: 5) {
                         CircularMeterView(
                             value: coreUsage.totalUsage,
-                            title: "",
                             color: colorForCore(index: index, usage: coreUsage.totalUsage),
                             size: size
                         )
                         
                         if showLabels {
-                            VStack(spacing: 2) {
-                                Text("コア\(index)")
-                                    .font(.system(size: 10, weight: .medium))
-                                    .foregroundColor(.secondary)
-                                
-                                Text(String(format: "%.0f%%", coreUsage.totalUsage))
-                                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
-                                    .foregroundColor(.primary)
-                            }
+                            Text("コア\(index)")
+                                .font(.system(size: 10, weight: .medium))
+                                .foregroundColor(.secondary)
                         }
                     }
                 }
