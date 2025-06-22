@@ -16,7 +16,7 @@ protocol SystemMetricsRepositoryProtocol {
 }
 
 class SystemMetricsRepository: ObservableObject, SystemMetricsRepositoryProtocol {
-    private let cpuMonitor = CPUMonitor()
+    let cpuMonitor = CPUMonitor() // publicアクセス用にletで公開
     private var cancellables = Set<AnyCancellable>()
     private var monitoringTimer: Timer?
     

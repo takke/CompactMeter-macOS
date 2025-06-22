@@ -19,6 +19,7 @@ struct MenuBarPopoverView: View {
                 Text("CompactMeter")
                     .font(.headline)
                 Spacer()
+                
                 Button(action: { NSApplication.shared.terminate(nil) }) {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundColor(.gray)
@@ -26,7 +27,7 @@ struct MenuBarPopoverView: View {
                 .buttonStyle(.plain)
             }
             
-            // CPUメーター
+            // 全体のCPU表示
             VStack(spacing: 12) {
                 CircularMeterView(
                     value: meterViewModel.animatedCPUUsage,
@@ -53,6 +54,20 @@ struct MenuBarPopoverView: View {
                 }
             }
             
+            // コア別CPU表示（常に表示）
+            if let multiCoreData = meterViewModel.multiCoreCPUData {
+                Divider()
+                
+                ScrollView {
+                    MultiCoreView(
+                        multiCoreData: multiCoreData,
+                        size: 32,
+                        showLabels: true
+                    )
+                }
+                .frame(maxHeight: 350)
+            }
+            
             // フッター
             HStack {
                 Button(meterViewModel.isMonitoring ? "停止" : "開始") {
@@ -73,9 +88,9 @@ struct MenuBarPopoverView: View {
             }
         }
         .padding()
-        .frame(width: 300, height: 220)
+        .frame(width: 520, height: 570)
         .onAppear {
-            meterViewModel.startMonitoring()
+            meterViewModel.startMultiCoreMonitoring()
         }
         .onDisappear {
             meterViewModel.stopMonitoring()
