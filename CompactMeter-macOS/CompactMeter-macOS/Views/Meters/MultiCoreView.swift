@@ -22,17 +22,6 @@ struct MultiCoreView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            // 全体の使用率表示
-            HStack {
-                Text("全体")
-                    .font(.caption)
-                    .foregroundColor(.primary)
-                Spacer()
-                Text(String(format: "%.1f%%", multiCoreData.totalUsage.totalUsage))
-                    .font(.caption.weight(.semibold))
-                    .foregroundColor(.blue)
-            }
-            
             // コア別メーター表示
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: min(multiCoreData.coreCount, maxCoresPerRow)), spacing: 12) {
                 ForEach(Array(multiCoreData.coreUsages.enumerated()), id: \.offset) { index, coreUsage in
@@ -57,46 +46,6 @@ struct MultiCoreView: View {
                         }
                     }
                 }
-            }
-            
-            // 統計情報
-            if showLabels {
-                VStack(spacing: 6) {
-                    HStack {
-                        Text("平均")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                        Spacer()
-                        Text(String(format: "%.1f%%", multiCoreData.averageCoreUsage))
-                            .font(.caption.weight(.medium))
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    if let maxCore = multiCoreData.maxCoreUsage {
-                        HStack {
-                            Text("最大")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Spacer()
-                            Text("コア\(maxCore.index): \(String(format: "%.1f%%", maxCore.usage))")
-                                .font(.caption.weight(.medium))
-                                .foregroundColor(.red)
-                        }
-                    }
-                    
-                    if let minCore = multiCoreData.minCoreUsage {
-                        HStack {
-                            Text("最小")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Spacer()
-                            Text("コア\(minCore.index): \(String(format: "%.1f%%", minCore.usage))")
-                                .font(.caption.weight(.medium))
-                                .foregroundColor(.green)
-                        }
-                    }
-                }
-                .padding(.top, 8)
             }
         }
     }

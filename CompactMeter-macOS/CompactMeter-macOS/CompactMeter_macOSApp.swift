@@ -16,6 +16,6 @@ struct CompactMeter_macOSApp: App {
             ContentView()
         }
         .windowStyle(.hiddenTitleBar)
-        .windowResizability(.contentSize)
+        .windowResizability(.contentMinSize)
     }
 }
