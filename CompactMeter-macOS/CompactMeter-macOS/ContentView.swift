@@ -23,7 +23,7 @@ struct ContentView: View {
                     CircularMeterView(
                         value: meterViewModel.animatedCPUUsage,
                         color: .blue,
-                        size: 100
+                        size: 80
                     )
                     
                     // 詳細情報
@@ -58,7 +58,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                .frame(minWidth: 150)
+                .frame(minWidth: 120)
                 
                 // 右側：コア別CPU使用率
                 if let multiCoreData = meterViewModel.multiCoreCPUData {
@@ -73,8 +73,9 @@ struct ContentView: View {
                 }
             }
         }
-        .padding(8)
-        .frame(minWidth: 500, minHeight: 160)
+        .padding(4)
+        .frame(minWidth: 400, minHeight: 140)
+        .background(Color(NSColor.controlBackgroundColor))
         .onAppear {
             meterViewModel.startMultiCoreMonitoring(interval: 2.0)
         }
