@@ -18,7 +18,7 @@ struct MultiCoreView: View {
         self.showLabels = showLabels
     }
     
-    private let maxCoresPerRow = 4
+    private let maxCoresPerRow = 5
     
     var body: some View {
         VStack(spacing: 8) {
