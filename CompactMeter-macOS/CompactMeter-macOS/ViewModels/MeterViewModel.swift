@@ -24,23 +24,29 @@ class MeterViewModel: ObservableObject {
     init(repository: SystemMetricsRepositoryProtocol = SystemMetricsRepository()) {
         self.repository = repository
         
-        // CPU使用率の変化をアニメーション付きで反映
+        // CPU使用率の変化をアニメーション付きで反映（軽量化）
         $cpuUsage
             .map { $0.totalUsage }
-            .removeDuplicates()
+            .removeDuplicates { abs($0 - $1) < 1.0 } // 1%未満の変化は無視
+            .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main) // デバウンス追加
             .sink { [weak self] newUsage in
-                withAnimation(.easeInOut(duration: 0.5)) {
+                withAnimation(.easeOut(duration: 0.5)) {
                     self?.animatedCPUUsage = newUsage
                 }
             }
             .store(in: &cancellables)
         
-        // マルチコアデータの変化をアニメーション付きで反映
+        // マルチコアデータの変化をアニメーション付きで反映（軽量化）
         $multiCoreCPUData
             .compactMap { $0?.coreUsages.map { $0.totalUsage } }
-            .removeDuplicates()
+            .removeDuplicates { old, new in
+                // 配列の要素で1%以上の変化があった場合のみ更新
+                guard old.count == new.count else { return false }
+                return zip(old, new).allSatisfy { abs($0 - $1) < 1.0 }
+            }
+            .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
             .sink { [weak self] newUsages in
-                withAnimation(.easeInOut(duration: 0.5)) {
+                withAnimation(.easeOut(duration: 0.5)) {
                     self?.animatedCoreUsages = newUsages
                 }
             }
@@ -81,27 +87,26 @@ class MeterViewModel: ObservableObject {
         
         isMonitoring = true
         
-        // 全体のCPU使用率とコア別CPU使用率を同時に監視
+        // 最適化された単一API呼び出しで全体とコア別CPU使用率を同時に監視
         Timer.publish(every: interval, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 
                 Task {
-                    // 全体のCPU使用率を取得
-                    let totalUsage = await self.repository.getCPUUsageAsync()
-                    
-                    // コア別CPU使用率を取得
+                    // 単一API呼び出しで全体とコア別CPU使用率を同時に取得
                     if let cpuMonitor = (self.repository as? SystemMetricsRepository)?.cpuMonitor {
-                        let perCoreUsages = await cpuMonitor.getPerCPUUsageAsync()
+                        let multiCoreData = await cpuMonitor.getMultiCoreCPUUsageAsync()
                         
                         await MainActor.run {
-                            self.cpuUsage = totalUsage
-                            if !perCoreUsages.isEmpty {
-                                self.multiCoreCPUData = MultiCoreCPUData(totalUsage: totalUsage, coreUsages: perCoreUsages)
+                            self.cpuUsage = multiCoreData.total
+                            if !multiCoreData.cores.isEmpty {
+                                self.multiCoreCPUData = MultiCoreCPUData(totalUsage: multiCoreData.total, coreUsages: multiCoreData.cores)
                             }
                         }
                     } else {
+                        // フォールバック処理
+                        let totalUsage = await self.repository.getCPUUsageAsync()
                         await MainActor.run {
                             self.cpuUsage = totalUsage
                         }

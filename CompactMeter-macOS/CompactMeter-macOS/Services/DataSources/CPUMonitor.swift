@@ -63,8 +63,8 @@ class CPUMonitor: ObservableObject, @unchecked Sendable {
         }
     }
     
-    /// コア別CPU使用率を取得する
-    func getPerCPUUsage() -> [CPUUsageData] {
+    /// コア別CPU使用率を取得し、全体の使用率も同時に計算する（最適化版）
+    func getMultiCoreCPUUsage() -> (total: CPUUsageData, cores: [CPUUsageData]) {
         var perCPUInfo: processor_info_array_t?
         var numCPUInfo: mach_msg_type_number_t = 0
         var numCPUs: natural_t = 0
@@ -72,7 +72,8 @@ class CPUMonitor: ObservableObject, @unchecked Sendable {
         let result = host_processor_info(mach_host_self(), PROCESSOR_CPU_LOAD_INFO, &numCPUs, &perCPUInfo, &numCPUInfo)
         
         guard result == KERN_SUCCESS, let cpuInfo = perCPUInfo else {
-            return []
+            let defaultUsage = CPUUsageData(userUsage: 0, systemUsage: 0, idleUsage: 100)
+            return (total: defaultUsage, cores: [])
         }
         
         defer {
@@ -80,6 +81,15 @@ class CPUMonitor: ObservableObject, @unchecked Sendable {
         }
         
         var cpuUsages: [CPUUsageData] = []
+        var totalUserDiff: Double = 0
+        var totalSystemDiff: Double = 0
+        var totalIdleDiff: Double = 0
+        var totalNiceDiff: Double = 0
+        
+        // previousPerCPUTicksのサイズを予め調整
+        if previousPerCPUTicks.count != Int(numCPUs) {
+            previousPerCPUTicks = Array(repeating: host_cpu_load_info(cpu_ticks: (0, 0, 0, 0)), count: Int(numCPUs))
+        }
         
         for i in 0..<Int(numCPUs) {
             let cpuLoadInfoPtr = cpuInfo.advanced(by: i * Int(CPU_STATE_MAX))
@@ -91,43 +101,68 @@ class CPUMonitor: ObservableObject, @unchecked Sendable {
             
             let currentCPUTicks = host_cpu_load_info(cpu_ticks: (natural_t(userTicks), natural_t(systemTicks), natural_t(idleTicks), natural_t(niceTicks)))
             
-            // 前回の値と比較して使用率を計算
-            if i < previousPerCPUTicks.count {
-                let previousTicks = previousPerCPUTicks[i]
+            let previousTicks = previousPerCPUTicks[i]
+            
+            let userDiff = Double(currentCPUTicks.cpu_ticks.0 - previousTicks.cpu_ticks.0)
+            let systemDiff = Double(currentCPUTicks.cpu_ticks.1 - previousTicks.cpu_ticks.1)
+            let idleDiff = Double(currentCPUTicks.cpu_ticks.2 - previousTicks.cpu_ticks.2)
+            let niceDiff = Double(currentCPUTicks.cpu_ticks.3 - previousTicks.cpu_ticks.3)
+            
+            let totalDiff = userDiff + systemDiff + idleDiff + niceDiff
+            
+            if totalDiff > 0 {
+                let userUsage = (userDiff / totalDiff) * 100.0
+                let systemUsage = (systemDiff / totalDiff) * 100.0
+                let idleUsage = (idleDiff / totalDiff) * 100.0
                 
-                let userDiff = Double(currentCPUTicks.cpu_ticks.0 - previousTicks.cpu_ticks.0)
-                let systemDiff = Double(currentCPUTicks.cpu_ticks.1 - previousTicks.cpu_ticks.1)
-                let idleDiff = Double(currentCPUTicks.cpu_ticks.2 - previousTicks.cpu_ticks.2)
-                let niceDiff = Double(currentCPUTicks.cpu_ticks.3 - previousTicks.cpu_ticks.3)
+                cpuUsages.append(CPUUsageData(userUsage: userUsage, systemUsage: systemUsage, idleUsage: idleUsage))
                 
-                let totalDiff = userDiff + systemDiff + idleDiff + niceDiff
-                
-                if totalDiff > 0 {
-                    let userUsage = (userDiff / totalDiff) * 100.0
-                    let systemUsage = (systemDiff / totalDiff) * 100.0
-                    let idleUsage = (idleDiff / totalDiff) * 100.0
-                    
-                    cpuUsages.append(CPUUsageData(userUsage: userUsage, systemUsage: systemUsage, idleUsage: idleUsage))
-                } else {
-                    cpuUsages.append(CPUUsageData(userUsage: 0, systemUsage: 0, idleUsage: 100))
-                }
+                // 全体の使用率計算のために累積
+                totalUserDiff += userDiff
+                totalSystemDiff += systemDiff
+                totalIdleDiff += idleDiff
+                totalNiceDiff += niceDiff
             } else {
-                // 初回実行時
                 cpuUsages.append(CPUUsageData(userUsage: 0, systemUsage: 0, idleUsage: 100))
             }
             
-            // 現在の値を保存（配列のサイズを調整）
-            if i < previousPerCPUTicks.count {
-                previousPerCPUTicks[i] = currentCPUTicks
-            } else {
-                previousPerCPUTicks.append(currentCPUTicks)
-            }
+            // 現在の値を保存
+            previousPerCPUTicks[i] = currentCPUTicks
         }
         
-        return cpuUsages
+        // 全体のCPU使用率を計算
+        let totalAllDiff = totalUserDiff + totalSystemDiff + totalIdleDiff + totalNiceDiff
+        let totalCPUUsage: CPUUsageData
+        
+        if totalAllDiff > 0 {
+            let totalUserUsage = (totalUserDiff / totalAllDiff) * 100.0
+            let totalSystemUsage = (totalSystemDiff / totalAllDiff) * 100.0
+            let totalIdleUsage = (totalIdleDiff / totalAllDiff) * 100.0
+            totalCPUUsage = CPUUsageData(userUsage: totalUserUsage, systemUsage: totalSystemUsage, idleUsage: totalIdleUsage)
+        } else {
+            totalCPUUsage = CPUUsageData(userUsage: 0, systemUsage: 0, idleUsage: 100)
+        }
+        
+        return (total: totalCPUUsage, cores: cpuUsages)
     }
     
-    /// 非同期でコア別CPU使用率を取得する
+    /// コア別CPU使用率を取得する（後方互換性のため維持）
+    func getPerCPUUsage() -> [CPUUsageData] {
+        let result = getMultiCoreCPUUsage()
+        return result.cores
+    }
+    
+    /// 非同期でマルチコアCPU使用率を取得する（最適化版）
+    func getMultiCoreCPUUsageAsync() async -> (total: CPUUsageData, cores: [CPUUsageData]) {
+        return await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .utility).async {
+                let usage = self.getMultiCoreCPUUsage()
+                continuation.resume(returning: usage)
+            }
+        }
+    }
+    
+    /// 非同期でコア別CPU使用率を取得する（後方互換性のため維持）
     func getPerCPUUsageAsync() async -> [CPUUsageData] {
         return await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .utility).async {

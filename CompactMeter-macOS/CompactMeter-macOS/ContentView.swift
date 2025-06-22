@@ -76,7 +76,7 @@ struct ContentView: View {
         .padding(8)
         .frame(minWidth: 500, minHeight: 160)
         .onAppear {
-            meterViewModel.startMultiCoreMonitoring(interval: 1.0)
+            meterViewModel.startMultiCoreMonitoring(interval: 2.0)
         }
         .onDisappear {
             meterViewModel.stopMonitoring()
