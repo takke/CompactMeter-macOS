@@ -37,9 +37,9 @@ CONFIGURATION="Release"
 BUILD_DIR="./build"
 APP_NAME="${PROJECT_NAME}.app"
 
-# 日付フォーマット (YYYYMMDD)
-DATE_STR=$(date +"%Y%m%d")
-ZIP_NAME="${PROJECT_NAME}-${DATE_STR}.zip"
+# 日付時刻フォーマット (YYYYMMDD-HHMM)
+DATE_TIME_STR=$(date +"%Y%m%d-%H%M")
+ZIP_NAME="${PROJECT_NAME}-${DATE_TIME_STR}.zip"
 OUTPUT_DIR="./release"
 
 log_info "=== CompactMeter-macOS ビルド&パッケージ作成開始 ==="
