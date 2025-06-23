@@ -1,9 +1,9 @@
 # CompactMeter-macOS
 
-macOS向けの軽量かつコンパクトなCPU使用率監視アプリケーション。Windows版CompactMeterのmacOS移植版として開発されました。
+macOS向けの軽量かつコンパクトなCPU使用率監視アプリケーション。[Windows版CompactMeter](https://github.com/takke/CompactMeter)のmacOS移植版として開発されました。
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Platform-macOS%2015.5+-blue.svg" alt="Platform">
+  <img src="https://img.shields.io/badge/Platform-macOS%2015.0+-blue.svg" alt="Platform">
   <img src="https://img.shields.io/badge/Swift-5.5+-orange.svg" alt="Swift Version">
   <img src="https://img.shields.io/badge/Xcode-16+-blue.svg" alt="Xcode Version">
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
@@ -32,7 +32,7 @@ CompactMeter-macOSは、リアルタイムでCPU使用率を監視する軽量�
 
 ## システム要件
 
-- **OS**: macOS 15.5以降
+- **OS**: macOS 15.0以降
 - **アーキテクチャ**: Apple Silicon (ARM64)
 - **メモリ**: 最小16MB
 
