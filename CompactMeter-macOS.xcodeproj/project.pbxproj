@@ -29,20 +29,42 @@
 		FD4BD41E2E085D9F00AA5283 /* CompactMeter-macOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CompactMeter-macOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FD9EFF312E0912DE00510D6F /* Exceptions for "CompactMeter-macOS" folder in "CompactMeter-macOS" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"CompactMeter-macOSTests/CompactMeter_macOSTests.swift",
+				"CompactMeter-macOSUITests/CompactMeter_macOSUITests.swift",
+				"CompactMeter-macOSUITests/CompactMeter_macOSUITestsLaunchTests.swift",
+			);
+			target = FD4BD4062E085D9E00AA5283 /* CompactMeter-macOS */;
+		};
+		FD9EFF322E0912DE00510D6F /* Exceptions for "CompactMeter-macOS" folder in "CompactMeter-macOSTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"CompactMeter-macOSTests/CompactMeter_macOSTests.swift",
+			);
+			target = FD4BD4132E085D9F00AA5283 /* CompactMeter-macOSTests */;
+		};
+		FD9EFF352E0912F400510D6F /* Exceptions for "CompactMeter-macOS" folder in "CompactMeter-macOSUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"CompactMeter-macOSUITests/CompactMeter_macOSUITests.swift",
+				"CompactMeter-macOSUITests/CompactMeter_macOSUITestsLaunchTests.swift",
+			);
+			target = FD4BD41D2E085D9F00AA5283 /* CompactMeter-macOSUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FD4BD4092E085D9E00AA5283 /* CompactMeter-macOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FD9EFF312E0912DE00510D6F /* Exceptions for "CompactMeter-macOS" folder in "CompactMeter-macOS" target */,
+				FD9EFF322E0912DE00510D6F /* Exceptions for "CompactMeter-macOS" folder in "CompactMeter-macOSTests" target */,
+				FD9EFF352E0912F400510D6F /* Exceptions for "CompactMeter-macOS" folder in "CompactMeter-macOSUITests" target */,
+			);
 			path = "CompactMeter-macOS";
-			sourceTree = "<group>";
-		};
-		FD4BD4172E085D9F00AA5283 /* CompactMeter-macOSTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "CompactMeter-macOSTests";
-			sourceTree = "<group>";
-		};
-		FD4BD4212E085D9F00AA5283 /* CompactMeter-macOSUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "CompactMeter-macOSUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -76,8 +98,6 @@
 			isa = PBXGroup;
 			children = (
 				FD4BD4092E085D9E00AA5283 /* CompactMeter-macOS */,
-				FD4BD4172E085D9F00AA5283 /* CompactMeter-macOSTests */,
-				FD4BD4212E085D9F00AA5283 /* CompactMeter-macOSUITests */,
 				FD4BD4082E085D9E00AA5283 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -130,9 +150,6 @@
 			dependencies = (
 				FD4BD4162E085D9F00AA5283 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				FD4BD4172E085D9F00AA5283 /* CompactMeter-macOSTests */,
-			);
 			name = "CompactMeter-macOSTests";
 			packageProductDependencies = (
 			);
@@ -152,9 +169,6 @@
 			);
 			dependencies = (
 				FD4BD4202E085D9F00AA5283 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				FD4BD4212E085D9F00AA5283 /* CompactMeter-macOSUITests */,
 			);
 			name = "CompactMeter-macOSUITests";
 			packageProductDependencies = (
