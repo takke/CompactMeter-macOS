@@ -25,10 +25,10 @@ CompactMeter-macOSは、リアルタイムでCPU使用率を監視する軽量�
 ## スクリーンショット
 
 ### ライトモード
-![ライトモード表示](FILES/ScreenShot1.png)
+![ライトモード表示](FILES/screenshot-light-mode.png)
 
 ### ダークモード
-![ダークモード表示](FILES/ScreenShot2.png)
+![ダークモード表示](FILES/screenshot-dark-mode.png)
 
 ## システム要件
 
