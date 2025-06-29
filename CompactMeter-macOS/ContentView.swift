@@ -29,7 +29,7 @@ struct ContentView: View {
                     
                     // 詳細情報
                     VStack(spacing: 8) {
-                        HStack(spacing: 16) {
+                        HStack(spacing: 12) {
                             VStack {
                                 Text("User")
                                     .font(.caption)
@@ -37,7 +37,9 @@ struct ContentView: View {
                                 Text(String(format: "%.1f%%", meterViewModel.cpuUsage.userUsage))
                                     .font(.caption.weight(.semibold))
                                     .foregroundColor(.blue)
+                                    .frame(minWidth: 35)
                             }
+                            .frame(width: 40)
                             
                             VStack {
                                 Text("System")
@@ -46,7 +48,9 @@ struct ContentView: View {
                                 Text(String(format: "%.1f%%", meterViewModel.cpuUsage.systemUsage))
                                     .font(.caption.weight(.semibold))
                                     .foregroundColor(.orange)
+                                    .frame(minWidth: 35)
                             }
+                            .frame(width: 40)
                             
                             VStack {
                                 Text("Idle")
@@ -55,11 +59,13 @@ struct ContentView: View {
                                 Text(String(format: "%.1f%%", meterViewModel.cpuUsage.idleUsage))
                                     .font(.caption.weight(.semibold))
                                     .foregroundColor(.green)
+                                    .frame(minWidth: 35)
                             }
+                            .frame(width: 40)
                         }
                     }
                 }
-                .frame(minWidth: 120)
+                .frame(minWidth: 100)
                 
                 // 右側：コア別CPU使用率
                 if let multiCoreData = meterViewModel.multiCoreCPUData {
