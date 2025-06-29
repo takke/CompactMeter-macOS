@@ -56,6 +56,19 @@ open CompactMeter-macOS.xcodeproj
 xcodebuild -project CompactMeter-macOS.xcodeproj -scheme CompactMeter-macOS -configuration Release build
 ```
 
+### ビルドスクリプトを使用したインストール
+
+`build_and_package.sh`スクリプトを使用すると、簡単にビルドとパッケージ作成ができます：
+
+```bash
+./build_and_package.sh
+```
+
+このスクリプトは以下を実行します：
+- Release構成でアプリケーションをビルド
+- `build/`ディレクトリに`.app`ファイルをコピー
+- `release/`ディレクトリにZIPパッケージを作成（例：`CompactMeter-macOS_1.0.0_20250629_1234.zip`）
+
 ## 使用方法
 
 1. アプリケーションを起動すると、コンパクトなウィンドウが表示されます
