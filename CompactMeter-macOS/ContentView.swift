@@ -22,7 +22,7 @@ struct ContentView: View {
                 VStack(spacing: 12) {
                     CircularMeterView(
                         value: meterViewModel.animatedCPUUsage,
-                        color: .blue,
+                        color: colorForCPUUsage(meterViewModel.animatedCPUUsage),
                         size: 80
                     )
                     
@@ -82,6 +82,19 @@ struct ContentView: View {
         }
         .onDisappear {
             meterViewModel.stopMonitoring()
+        }
+    }
+    
+    // CPU使用率に応じて色を決定
+    private func colorForCPUUsage(_ usage: Double) -> Color {
+        if usage > 80 {
+            return .red
+        } else if usage > 60 {
+            return .orange
+        } else if usage > 40 {
+            return .yellow
+        } else {
+            return .blue
         }
     }
 }
