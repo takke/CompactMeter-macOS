@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		FD84BE332E11852100E16DAD /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FD84BE322E11852100E16DAD /* README.md */; };
+		FD84BE372E1188FC00E16DAD /* ARCHITECTURE.md in Resources */ = {isa = PBXBuildFile; fileRef = FD84BE342E1188FC00E16DAD /* ARCHITECTURE.md */; };
+		FD84BE382E1188FC00E16DAD /* CLAUDE.md in Resources */ = {isa = PBXBuildFile; fileRef = FD84BE362E1188FC00E16DAD /* CLAUDE.md */; };
+		FD84BE392E1188FC00E16DAD /* build_and_package.sh in Resources */ = {isa = PBXBuildFile; fileRef = FD84BE352E1188FC00E16DAD /* build_and_package.sh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +35,9 @@
 		FD4BD4142E085D9F00AA5283 /* CompactMeter-macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CompactMeter-macOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD4BD41E2E085D9F00AA5283 /* CompactMeter-macOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CompactMeter-macOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD84BE322E11852100E16DAD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		FD84BE342E1188FC00E16DAD /* ARCHITECTURE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ARCHITECTURE.md; sourceTree = "<group>"; };
+		FD84BE352E1188FC00E16DAD /* build_and_package.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_and_package.sh; sourceTree = "<group>"; };
+		FD84BE362E1188FC00E16DAD /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -102,6 +108,9 @@
 		FD4BD3FE2E085D9E00AA5283 = {
 			isa = PBXGroup;
 			children = (
+				FD84BE342E1188FC00E16DAD /* ARCHITECTURE.md */,
+				FD84BE352E1188FC00E16DAD /* build_and_package.sh */,
+				FD84BE362E1188FC00E16DAD /* CLAUDE.md */,
 				FD84BE322E11852100E16DAD /* README.md */,
 				FD4BD4092E085D9E00AA5283 /* CompactMeter-macOS */,
 				FD4BD4082E085D9E00AA5283 /* Products */,
@@ -232,6 +241,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD84BE372E1188FC00E16DAD /* ARCHITECTURE.md in Resources */,
+				FD84BE382E1188FC00E16DAD /* CLAUDE.md in Resources */,
+				FD84BE392E1188FC00E16DAD /* build_and_package.sh in Resources */,
 				FD84BE332E11852100E16DAD /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
