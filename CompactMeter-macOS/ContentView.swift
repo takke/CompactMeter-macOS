@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 
 struct ContentView: View {
     @StateObject private var meterViewModel = MeterViewModel()
@@ -76,6 +77,7 @@ struct ContentView: View {
         }
         .padding(4)
         .frame(minWidth: 400, minHeight: 140)
+        .background(DraggableWindowBackground())
         .background(Color(NSColor.controlBackgroundColor))
         .onAppear {
             meterViewModel.startMultiCoreMonitoring(interval: 2.0)
@@ -95,6 +97,57 @@ struct ContentView: View {
             return .yellow
         } else {
             return .blue
+        }
+    }
+}
+
+struct DraggableWindowBackground: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSView {
+        let view = DraggableView()
+        view.coordinator = context.coordinator
+        return view
+    }
+    
+    func updateNSView(_ nsView: NSView, context: Context) {}
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+    
+    class DraggableView: NSView {
+        var coordinator: Coordinator?
+        
+        override func mouseDown(with event: NSEvent) {
+            coordinator?.mouseDown(with: event, in: self)
+        }
+        
+        override func mouseDragged(with event: NSEvent) {
+            coordinator?.mouseDragged(with: event, in: self)
+        }
+    }
+    
+    class Coordinator: NSObject {
+        private var initialLocation: NSPoint = .zero
+        
+        func mouseDown(with event: NSEvent, in view: NSView) {
+            guard let window = view.window else { return }
+            initialLocation = event.locationInWindow
+        }
+        
+        func mouseDragged(with event: NSEvent, in view: NSView) {
+            guard let window = view.window else { return }
+            
+            let currentLocation = event.locationInWindow
+            let deltaX = currentLocation.x - initialLocation.x
+            let deltaY = currentLocation.y - initialLocation.y
+            
+            let currentFrame = window.frame
+            let newOrigin = NSPoint(
+                x: currentFrame.origin.x + deltaX,
+                y: currentFrame.origin.y + deltaY
+            )
+            
+            window.setFrameOrigin(newOrigin)
         }
     }
 }
