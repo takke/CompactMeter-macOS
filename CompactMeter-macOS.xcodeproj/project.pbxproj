@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FD84BE332E11852100E16DAD /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FD84BE322E11852100E16DAD /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		FD4BD4152E085D9F00AA5283 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		FD4BD4072E085D9E00AA5283 /* CompactMeter-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CompactMeter-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD4BD4142E085D9F00AA5283 /* CompactMeter-macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CompactMeter-macOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD4BD41E2E085D9F00AA5283 /* CompactMeter-macOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CompactMeter-macOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD84BE322E11852100E16DAD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -97,6 +102,7 @@
 		FD4BD3FE2E085D9E00AA5283 = {
 			isa = PBXGroup;
 			children = (
+				FD84BE322E11852100E16DAD /* README.md */,
 				FD4BD4092E085D9E00AA5283 /* CompactMeter-macOS */,
 				FD4BD4082E085D9E00AA5283 /* Products */,
 			);
@@ -226,6 +232,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD84BE332E11852100E16DAD /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
