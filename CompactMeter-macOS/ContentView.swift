@@ -81,7 +81,7 @@ struct ContentView: View {
                 }
             }
         }
-        .padding(4)
+        .padding(8)
         .frame(minWidth: 400, minHeight: 140)
         .background(DraggableWindowBackground())
         .background(Color(NSColor.controlBackgroundColor))
