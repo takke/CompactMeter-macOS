@@ -101,7 +101,11 @@ class MeterViewModel: ObservableObject {
                         await MainActor.run {
                             self.cpuUsage = multiCoreData.total
                             if !multiCoreData.cores.isEmpty {
-                                self.multiCoreCPUData = MultiCoreCPUData(totalUsage: multiCoreData.total, coreUsages: multiCoreData.cores)
+                                self.multiCoreCPUData = MultiCoreCPUData(
+                                    totalUsage: multiCoreData.total, 
+                                    coreUsages: multiCoreData.cores,
+                                    coreInfos: multiCoreData.coreInfos
+                                )
                             }
                         }
                     } else {

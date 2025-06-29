@@ -11,11 +11,13 @@ struct CircularMeterView: View {
     let value: Double // 0-100の値
     let color: Color
     let size: CGFloat
+    let borderColor: Color? // 枠線の色（nilの場合は枠線なし）
     
-    init(value: Double, color: Color = .blue, size: CGFloat = 80) {
+    init(value: Double, color: Color = .blue, size: CGFloat = 80, borderColor: Color? = nil) {
         self.value = max(0, min(100, value)) // 0-100の範囲に制限
         self.color = color
         self.size = size
+        self.borderColor = borderColor
     }
     
     private var progress: Double {
@@ -54,6 +56,14 @@ struct CircularMeterView: View {
                         .foregroundColor(.secondary)
                 }
             }
+            // コアタイプ判別用の枠線
+            .overlay(
+                borderColor != nil ?
+                Circle()
+                    .stroke(borderColor!, lineWidth: 1)
+                    .frame(width: size + 10, height: size + 10)
+                : nil
+            )
         }
     }
 }

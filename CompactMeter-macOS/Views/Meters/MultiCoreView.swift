@@ -31,13 +31,14 @@ struct MultiCoreView: View {
     var body: some View {
         VStack(spacing: 8) {
             // コア別メーター表示
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: min(multiCoreData.coreCount, maxCoresPerRow)), spacing: 12) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: min(multiCoreData.coreCount, maxCoresPerRow)), spacing: 16) {
                 ForEach(Array(multiCoreData.coreUsages.enumerated()), id: \.offset) { index, coreUsage in
                     VStack(spacing: 5) {
                         CircularMeterView(
                             value: animatedCoreUsages?[safe: index] ?? coreUsage.totalUsage,
                             color: colorForCore(index: index, usage: animatedCoreUsages?[safe: index] ?? coreUsage.totalUsage),
-                            size: size
+                            size: size,
+                            borderColor: borderColorForCore(index: index)
                         )
                         
                         if showLabels {
@@ -61,6 +62,32 @@ struct MultiCoreView: View {
             return .yellow
         } else {
             return .blue
+        }
+    }
+    
+    // Pコアかどうかを判定
+    private func isPerformanceCore(index: Int) -> Bool {
+        guard let coreInfos = multiCoreData.coreInfos,
+              index < coreInfos.count else {
+            return false
+        }
+        return coreInfos[index].type == .performance
+    }
+    
+    // コアタイプに応じた枠線の色を返す
+    private func borderColorForCore(index: Int) -> Color? {
+        guard let coreInfos = multiCoreData.coreInfos,
+              index < coreInfos.count else {
+            return nil  // コアタイプ不明の場合は枠線なし
+        }
+        
+        switch coreInfos[index].type {
+        case .performance:
+            return Color.primary.opacity(0.8)  // Pコア：濃い色
+        case .efficiency:
+            return Color.primary.opacity(0.3)  // Eコア：薄い色
+        case .unknown:
+            return nil  // Intel Macなど：枠線なし
         }
     }
 }

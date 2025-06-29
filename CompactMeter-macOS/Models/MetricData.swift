@@ -7,6 +7,20 @@
 
 import Foundation
 
+// CPUコアのタイプ
+enum CPUCoreType {
+    case performance  // Pコア
+    case efficiency   // Eコア
+    case unknown      // Intel Macなど、P/E区別がない場合
+}
+
+// コア情報（使用率とコアタイプ）
+struct CPUCoreInfo {
+    let index: Int
+    let type: CPUCoreType
+    let usage: CPUUsageData
+}
+
 struct CPUUsageData {
     let userUsage: Double
     let systemUsage: Double
@@ -41,12 +55,14 @@ struct SystemMetrics {
 struct MultiCoreCPUData {
     let totalUsage: CPUUsageData
     let coreUsages: [CPUUsageData]
+    let coreInfos: [CPUCoreInfo]?  // コアタイプ情報（オプショナル）
     let coreCount: Int
     let timestamp: Date
     
-    init(totalUsage: CPUUsageData, coreUsages: [CPUUsageData]) {
+    init(totalUsage: CPUUsageData, coreUsages: [CPUUsageData], coreInfos: [CPUCoreInfo]? = nil) {
         self.totalUsage = totalUsage
         self.coreUsages = coreUsages
+        self.coreInfos = coreInfos
         self.coreCount = coreUsages.count
         self.timestamp = Date()
     }
