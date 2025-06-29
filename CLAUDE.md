@@ -121,6 +121,21 @@ CompactMeter-macOS/
 2. **Phase 2**: メーター描画、設定画面、アニメーション実装
 3. **Phase 3**: パフォーマンス最適化、エラーハンドリング、テスト、配布準備
 
+## リリース管理
+
+### タグ形式
+- **Nightlyビルド**: `nightly-YYYYMMDD-HHMM` 形式
+  - 例: `nightly-20250629-2344`
+  - GitHub Actionsによる自動ビルドのトリガーとして使用
+  - 開発版のテスト配布用
+
+### タグ作成コマンド
+```bash
+# nightlyタグの作成
+git tag -a nightly-$(date +'%Y%m%d-%H%M') -m "Nightly build $(date +'%Y-%m-%d')"
+git push origin nightly-$(date +'%Y%m%d-%H%M')
+```
+
 ## 言語設定
 
 - 日本語でコメントを記述
