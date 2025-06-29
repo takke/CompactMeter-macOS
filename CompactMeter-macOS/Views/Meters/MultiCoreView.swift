@@ -7,13 +7,21 @@
 
 import SwiftUI
 
+extension Array {
+    subscript(safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}
+
 struct MultiCoreView: View {
     let multiCoreData: MultiCoreCPUData
+    let animatedCoreUsages: [Double]?
     let size: CGFloat
     let showLabels: Bool
     
-    init(multiCoreData: MultiCoreCPUData, size: CGFloat = 60, showLabels: Bool = true) {
+    init(multiCoreData: MultiCoreCPUData, animatedCoreUsages: [Double]? = nil, size: CGFloat = 60, showLabels: Bool = true) {
         self.multiCoreData = multiCoreData
+        self.animatedCoreUsages = animatedCoreUsages
         self.size = size
         self.showLabels = showLabels
     }
@@ -27,8 +35,8 @@ struct MultiCoreView: View {
                 ForEach(Array(multiCoreData.coreUsages.enumerated()), id: \.offset) { index, coreUsage in
                     VStack(spacing: 5) {
                         CircularMeterView(
-                            value: coreUsage.totalUsage,
-                            color: colorForCore(index: index, usage: coreUsage.totalUsage),
+                            value: animatedCoreUsages?[safe: index] ?? coreUsage.totalUsage,
+                            color: colorForCore(index: index, usage: animatedCoreUsages?[safe: index] ?? coreUsage.totalUsage),
                             size: size
                         )
                         

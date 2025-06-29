@@ -65,6 +65,7 @@ struct ContentView: View {
                     VStack(spacing: 20) {
                         MultiCoreView(
                             multiCoreData: multiCoreData,
+                            animatedCoreUsages: meterViewModel.animatedCoreUsages,
                             size: 45,
                             showLabels: false
                         )
